@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,7 +19,7 @@ public class SecurityConfig {
     @Order(0)
     public SecurityFilterChain h2FilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher(PathRequest.toH2Console())
+//                .securityMatcher(PathRequest.toH2Console())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated())
@@ -25,5 +29,19 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/login").permitAll());
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withUsername("user")
+                .password("{noop}pass")
+                .roles("USER")
+                .build();
+
+        UserDetails admin = User.withUsername("admin")
+                .password("{noop}pass")
+                .roles("ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }
