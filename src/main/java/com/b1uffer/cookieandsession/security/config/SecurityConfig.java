@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +20,7 @@ public class SecurityConfig {
     @Order(0)
     public SecurityFilterChain h2FilterChain(HttpSecurity http) throws Exception {
         http
-//                .securityMatcher(PathRequest.toH2Console())
+                .securityMatcher(PathRequest.toH2Console())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated())
@@ -28,6 +29,18 @@ public class SecurityConfig {
                         .frameOptions(frame -> frame.sameOrigin()))
                 .formLogin(login -> login
                         .loginPage("/login").permitAll());
+        return http.build();
+    }
+
+    @Bean
+    @Order(1)
+    public SecurityFilterChain meFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/me/**")
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/me/**").authenticated()
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults()); // Basic Auth
         return http.build();
     }
 
