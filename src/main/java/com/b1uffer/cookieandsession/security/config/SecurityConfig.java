@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,6 +38,11 @@ public class SecurityConfig {
     public SecurityFilterChain meFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/me/**")
+                .sessionManagement(session -> session
+                        .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
+                        .maximumSessions(1) // 최대 1개의 세션만 허용하기
+                        .expiredUrl("/session-expired")
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/me/**").authenticated()
                         .anyRequest().authenticated())
