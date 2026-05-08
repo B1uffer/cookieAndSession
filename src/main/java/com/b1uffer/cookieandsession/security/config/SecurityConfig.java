@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         //세션 생성 정책 설정하기
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // REST API, JWT일 때
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // REST API, JWT일 때
 
                         .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
                         .maximumSessions(1) // 최대 1개의 세션만 허용하기
