@@ -1,7 +1,7 @@
 server:
   servlet:
     session:
-      timeout: 30m
+      timeout: 30m # 30분동안 활동이 없으면, 세션 종료
 
 spring:
   application:
