@@ -45,6 +45,7 @@ public class SecurityConfig {
                         //세션 생성 정책 설정하기
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // REST API, JWT일 때
 
+                        // 로그인에 성공했을 때 세션 탈취 방지, 세션 ID를 갈아끼워서 세션 하이재킹 방지
                         .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
                         .maximumSessions(1) // 최대 1개의 세션만 허용하기
                         .expiredUrl("/session-expired")
