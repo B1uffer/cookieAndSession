@@ -42,6 +42,9 @@ public class SecurityConfig {
                 .securityMatcher("/me/**")
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
+                        //세션 생성 정책 설정하기
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // REST API, JWT일 때
+
                         .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
                         .maximumSessions(1) // 최대 1개의 세션만 허용하기
                         .expiredUrl("/session-expired")
@@ -50,10 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/me/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
-        //세션 생성 정책 설정하기
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // REST API, JWT 일때
+                .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
