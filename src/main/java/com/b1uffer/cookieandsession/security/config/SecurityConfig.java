@@ -47,7 +47,7 @@ public class SecurityConfig {
 
                         // 로그인에 성공했을 때 세션 탈취 방지, 세션 ID를 갈아끼워서 세션 하이재킹 방지
                         .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
-                        .invalidSessionUrl("/session-expired") // 사용할 수 없는 세션 사용시 이동할 URL
+                        .invalidSessionUrl("/session-expired") // 사용할 수 없는 세션 사용시 이동할 URL, 단순 URL 지정
                         .maximumSessions(1) // 최대 1개의 세션만 허용하기
                         .expiredUrl("/auths/login-form") // 세션 만료시 이동할 URL, 로그인 다시 하세요
                 )
