@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Component
 public class CustomInvalidSessionStrategy implements InvalidSessionStrategy {
-    
+
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request,
                                          HttpServletResponse response) throws IOException, ServletException {
